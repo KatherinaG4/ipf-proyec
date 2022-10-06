@@ -36,7 +36,7 @@ const postPersonas = async (req, res) => {
     fecha_nacimiento,
     direccion,
     telefono,
-    rol
+    rol = ["common_user"],
   } = req.body;
 
   const newPersona = new personasModel({
@@ -142,5 +142,5 @@ module.exports = {
   postPersonas,
   putPersonas,
   deletePersonas,
-  getPersona,
+  getPersona
 };

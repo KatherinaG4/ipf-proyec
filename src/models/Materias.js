@@ -19,7 +19,7 @@ const MateriasSchema = new Schema({
         type: Date,
         required: true,
     },
-    nota: {
+    nota: [{
         alumno_refId: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "personas"
@@ -34,7 +34,7 @@ const MateriasSchema = new Schema({
             type: String,
             required: true,
         }
-    }
+    }]
 
 });
 

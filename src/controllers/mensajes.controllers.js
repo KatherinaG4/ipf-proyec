@@ -16,18 +16,18 @@ const getMens =async (req,res)=>{
 
 //OBTENER UN MENSAJE
 
-const getMensaje = async (req, res) => {
-  const { id } = req.params;
+// const getMensaje = async (req, res) => {
+//   const { id } = req.params;
 
-  try {
-    const mensaje = await mensajeModel.findOne({ _id: id });
-    res.json(mensaje);
-  } catch (error) {
-    res.json({
-      msg: "Error al obtener mensaje",
-    });
-  }
-};
+//   try {
+//     const mensaje = await mensajeModel.findOne({ _id: id });
+//     res.json(mensaje);
+//   } catch (error) {
+//     res.json({
+//       msg: "Error al obtener mensaje",
+//     });
+//   }
+// };
 
 //INSERTAR UN MENSAJE
 const postMens =async (req, res)=>{
@@ -100,7 +100,7 @@ if (
 }
 
 //ELIMINAR UN MENSAJE
-const deleteMens = async()=>{
+const deleteMens = async(req,res)=>{
   const { id } = req.params;
 
   try {

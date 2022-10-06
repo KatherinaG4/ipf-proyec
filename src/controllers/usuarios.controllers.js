@@ -1,6 +1,10 @@
 const usuariosModel = require("../models/Usuarios");
+const bcrypt = require("bcrypt");
 
-//TODOS LOS USUARIOS
+//POST LOGIN DE USUARIO
+
+
+//OBTENER TODOS LOS USUARIOS
 const getUsuarios = async (req, res) => {
   try {
     const data = await usuariosModel.find({});
@@ -10,7 +14,7 @@ const getUsuarios = async (req, res) => {
   }
 };
 
-// UN USUARIO
+//OBTENER UN USUARIO
 const getUsuario = async (req, res) => {
   const { id } = req.params;
 
@@ -24,34 +28,53 @@ const getUsuario = async (req, res) => {
   }
 };
 
-//INSERTAR USUARIOS
+//INSERTAR UN USUARIO
 
 const postUsuarios = async (req, res) => {
   const {
-    name, dni, email, pass, rol
-  } = req.body;
-
-  const newUsuario = new usuariosModel({
     name,
     dni,
     email,
     pass,
+    confirmPassword,
+    rol = ["common_user"],
+  } = req.body;
+
+  if (pass !== confirmPassword) {
+    return res.status(400).json({
+      msg: "Verifique los campos y vuelva a intentarlo",
+    });
+  }
+
+  const passwordHashed = bcrypt.hashSync(pass, 10);
+
+  const newUsuario = new usuariosModel({
+    name,
+    dni,
+    pass: passwordHashed,
+    email,
     rol,
   });
 
-  const usuario = await newUsuario.save();
+  try {
+    const usuario = await newUsuario.save();
 
-  return res.json({
-    message: "Usuario creado correctamente",
-    usuario,
-  });
-};
+    return res.json({
+      usuario,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).json({
+      msg: "Error al crear el usuario",
+    });
+  }
+};;
 
 //MODIFICAR USUARIO
 
 const putUsuarios = async (req,res) => {
   const { id } = req.params;
-const {name, dni, email, pass, rol } = req.body;
+const {name, dni, email, pass } = req.body;
 const actualizar = {};
 
 if (name) {
@@ -69,16 +92,12 @@ if (email) {
 if (pass) {
   actualizar.pass = pass;
 }
-if (rol) {
-  actualizar.rol = rol;
-}
 
 if (
   actualizar.name ||
   actualizar.dni ||
   actualizar.email ||
-  actualizar.pass ||
-  actualizar.rol
+  actualizar.pass
 ) {
   try {
     const usuario = await usuariosModel.findByIdAndUpdate(id, actualizar, {
@@ -118,4 +137,5 @@ module.exports = {
   putUsuarios,
   deleteUsuarios,
   getUsuario,
+
 };

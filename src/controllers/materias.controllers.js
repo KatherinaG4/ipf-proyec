@@ -36,9 +36,11 @@ const getMateria = async (req, res) =>{
 //INSERTAMOS UNA MATERIA
 
 const postMateria = async (req, res) => {
-  const { nombreMateria, horarioDesde, horarioHasta, nota } = req.body;
+  const { profeTitular, nombreMateria, horarioDesde, horarioHasta, nota } =
+    req.body;
 
   const newMateria = new MateriasModel({
+    profeTitular,
     nombreMateria,
     horarioDesde,
     horarioHasta,
@@ -58,8 +60,12 @@ const postMateria = async (req, res) => {
 
 const putMateria = async (req,res) => {
    const { id } = req.params;
-   const { nombreMateria, horarioDesde, horarioHasta, nota } = req.body;
+   const {profeTitular, nombreMateria, horarioDesde, horarioHasta, nota } = req.body;
    const actualizar = {};
+
+   if (profeTitular) {
+     actualizar.profeTitular = profeTitular;
+   }
 
    if (nombreMateria) {
      actualizar.nombreMateria = nombreMateria;
@@ -78,10 +84,11 @@ const putMateria = async (req,res) => {
    }
 
    if (
+     actualizar.profeTitular ||
      actualizar.nombreMateria ||
      actualizar.horarioDesde ||
      actualizar.horarioHasta ||
-     actualizar.nota 
+     actualizar.nota
    ) {
      try {
        const materia = await MateriasModel.findByIdAndUpdate(id, actualizar, {

@@ -34,9 +34,10 @@ const getAsistencia = async (req, res) =>{
 //INSERTAR UNA ASISTENCIA
 
 const postAsist = async (req, res) => {
-  const { carrera, materia, fecha } = req.body;
+  const {nombreAlumno, carrera, materia, fecha } = req.body;
 
   const newAsistencia = new AsistenciaModel({
+    nombreAlumno,
     carrera,
     materia,
     fecha,
@@ -54,9 +55,13 @@ const postAsist = async (req, res) => {
 
 const putAsist = async (req, res) => {
   const { id } = req.params;
-  const { carrera, materia, fecha } = req.body;
+  const {nombreAlumno, carrera, materia, fecha } = req.body;
   const actualizar = {};
 
+
+  if (nombreAlumno) {
+    actualizar.nombreAlumno = nombreAlumno;
+  }
   if (carrera) {
     actualizar.carrera = carrera;
   }
@@ -69,11 +74,20 @@ const putAsist = async (req, res) => {
     actualizar.fecha = fecha;
   }
 
-  if (actualizar.carrera || actualizar.materia || actualizar.fecha) {
+  if (
+    actualizar.nombreAlumno ||
+    actualizar.carrera ||
+    actualizar.materia ||
+    actualizar.fecha
+  ) {
     try {
-      const asistencia = await AsistenciaModel.findByIdAndUpdate(id, actualizar, {
-        new: true,
-      });
+      const asistencia = await AsistenciaModel.findByIdAndUpdate(
+        id,
+        actualizar,
+        {
+          new: true,
+        }
+      );
       return res.json({ msg: "La asistencia ha sido actualizado" });
     } catch (error) {
       return res.status(401).json({ msg: "Error al actualizar la asistencia" });

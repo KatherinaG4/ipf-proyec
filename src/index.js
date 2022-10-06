@@ -20,13 +20,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rutas
-// app.use('/api/users', require('./routes/users.routes'));
 app.use("/api/asistencia",require("./routes/asistencia.routes"))
 app.use("/api/mensajes",require("./routes/mensajes.routes"))
-app.use("/api/materia", require("./routes/materias.routes"))
-// app.use("/api",require("./routes/mensajes.routes"))
-// app.use("/api",require("./routes/personas.routes"))
-// app.use("/api",require("./routes/usuario.routes"))
+app.use("/api/personas", require("./routes/personas.routes"))
+app.use("/api/materias", require("./routes/materias.routes"));
+app.use("/api/usuarios", require("./routes/usuario.routes"));
+
 
 // Archivos estáticos
 app.listen(port, () => console.log(`Servidor corriendo en http://localhost:${port}`));
