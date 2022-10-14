@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 // Rutas
 app.use("/api/asistencia",require("./routes/asistencia.routes"))
 app.use("/api/mensajes",require("./routes/mensajes.routes"))
-app.use("/api/personas", require("./routes/personas.routes"))
+app.use("/api/perfil", require("./routes/perfil.routes"))
 app.use("/api/materias", require("./routes/materias.routes"));
 app.use("/api/usuarios", require("./routes/usuario.routes"));
 

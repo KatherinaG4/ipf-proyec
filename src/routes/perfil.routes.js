@@ -8,7 +8,7 @@ const {
   putPersonas,
   deletePersonas,
   
-} = require("../controllers/personas.controllers");
+} = require("../controllers/perfil.controllers");
 
 router.get("/", getPersonas);
 router.post("/", postPersonas);

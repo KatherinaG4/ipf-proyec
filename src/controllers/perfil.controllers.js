@@ -1,11 +1,11 @@
-const personasModel = require("../models/Personas");
+const perfilModel = require("../models/Perfil");
 
 //OBTENER TODAS LAS PERSONAS
 
 
 const getPersonas = async (req, res) => {
 try {
-    const data = await personasModel.find({});
+    const data = await perfilModel.find({});
     res.json(data);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -19,7 +19,7 @@ const getPersona = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const persona = await personasModel.findOne({ _id: id });
+    const persona = await perfilModel.findOne({ _id: id });
     res.json(persona);
   } catch (error) {
     res.json({
@@ -39,7 +39,7 @@ const postPersonas = async (req, res) => {
     rol = ["common_user"],
   } = req.body;
 
-  const newPersona = new personasModel({
+  const newPersona = new perfilModel({
     nombreApellido,
     dni,
     email,
@@ -108,7 +108,7 @@ const putPersonas = async (req, res) => {
     actualizar.rol
   ) {
     try {
-      const persona = await personasModel.findByIdAndUpdate(id, actualizar, {
+      const persona = await perfilModel.findByIdAndUpdate(id, actualizar, {
         new: true,
       });
       return res.json({ msg: "Datos de la persona actualizado" });
@@ -127,7 +127,7 @@ const deletePersonas = async () => {
   const { id } = req.params;
 
   try {
-    await personasModel.findByIdAndDelete(id, { new: true });
+    await perfilModel.findByIdAndDelete(id, { new: true });
 
     res.json({
       msg: "La persona ha sido eliminado",
