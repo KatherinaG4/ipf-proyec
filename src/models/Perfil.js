@@ -1,84 +1,62 @@
 const { model, Schema } = require("mongoose");
 
-const PersonasSchema = new Schema({
+const PerfilSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "usuario",
+    ref: "User",
   },
-  rol: [{ type: String, required: true }],
+  rol: { type: String, required: true },
 
-  dataAlumno: [
-    {
-      nombre_apellido: {
-        type: String,
-        required: true,
-      },
-      dni: {
-        type: String,
-        required: true,
-      },
-      fecha_nacimiento: {
-        type: Date,
-        required: true,
-      },
-      direccion: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
-      nro_telefono: {
-        type: Number,
-        required: true,
-      },
+  dataAlumno: {
+    instituto_precedente: {
+      type: String,
+      required: true,
     },
-  ],
-  dataAdmin: [
-    {
-      nombre_apellido: {
-        type: String,
-        required: true,
-      },
-      dni: {
-        type: String,
-        required: true,
-      },
-      cargo: {
-        type: String,
-        required: true,
-      },
-      nro_telefono: {
-        type: Number,
-        required: true,
-      },
+    titulo_secundario: {
+      type: String,
+      required: true,
     },
-  ],
-  dataProfe: [
-    {
-      nombre_apellido: {
-        type: String,
-        required: true,
-      },
-      dni: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
-      nro_telefono: {
-        type: Number,
-        required: true,
-      },
-      nombremateria: {
-        type: Schema.Types.ObjectId,
-        ref: "materias",
-      },
+    fecha_nacimiento: {
+      type: Date,
+      required: true,
     },
-  ],
+    direccion: {
+      type: String,
+      required: true,
+    },
+    nro_telefono: {
+      type: Number,
+      required: true,
+    },
+  },
+  dataAdmin: {
+    dni: {
+      type: String,
+      required: true,
+    },
+    cargo: {
+      type: String,
+      required: true,
+    },
+    nro_telefono: {
+      type: Number,
+      required: true,
+    },
+  },
+  dataProfe: {
+    dni: {
+      type: String,
+      required: true,
+    },
+    nro_telefono: {
+      type: Number,
+      required: true,
+    },
+    nombre_materia: {
+      type: Schema.Types.ObjectId,
+      ref: "materias",
+    },
+  },
 });
 
-module.exports = model("personas", PersonasSchema);
+module.exports = model("perfil", PerfilSchema);

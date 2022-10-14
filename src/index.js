@@ -24,7 +24,7 @@ app.use("/api/asistencia",require("./routes/asistencia.routes"))
 app.use("/api/mensajes",require("./routes/mensajes.routes"))
 app.use("/api/perfil", require("./routes/perfil.routes"))
 app.use("/api/materias", require("./routes/materias.routes"));
-app.use("/api/usuarios", require("./routes/usuario.routes"));
+app.use("/api/users", require("./routes/users.routes"));
 
 
 // Archivos estáticos

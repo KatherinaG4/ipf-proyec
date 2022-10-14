@@ -1,4 +1,5 @@
 const AsistenciaModel = require("../models/Asistencia");
+const User = require("../models/User")
 
 
 //OBTENER TODAS LAS ASISTENCIA
@@ -34,21 +35,22 @@ const getAsistencia = async (req, res) =>{
 //INSERTAR UNA ASISTENCIA
 
 const postAsist = async (req, res) => {
-  const {nombreAlumno, carrera, materia, fecha } = req.body;
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    const newAsist = {
+      carrera: req.body.carrera,
+      materia: req.body.materia,
+      fecha: req.body.fecha,
+      nombreAlumno: req.user.id,
+    };
+    const asist = new AsistenciaModel(newAsist);
 
-  const newAsistencia = new AsistenciaModel({
-    nombreAlumno,
-    carrera,
-    materia,
-    fecha,
-  });
+    await asist.save();
 
-  const asistencia = await newAsistencia.save();
-
-  return res.json({
-    message: "Asistencia creada correctamente",
-    asistencia,
-  });
+    res.json(asist);
+  } catch (error) {
+    res.status(500).send("Server Error");
+  }
 };
 
 //MODIFICAR UNA ASISTENCIA

@@ -2,15 +2,17 @@ const perfilModel = require("../models/Perfil");
 
 //OBTENER TODAS LAS PERSONAS
 
-
 const getPersonas = async (req, res) => {
-try {
-    const data = await perfilModel.find({});
+  try {
+    const data = await perfilModel
+      .find({ usuario: req.usuario.id })
+      .populate("usuario", ["name"]);
+    if (!data) return res.status(400).json({ msg: "NO existe tal usuario" });
+
     res.json(data);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
-
 };
 
 //OBTENER UNA PERSONA
@@ -29,34 +31,34 @@ const getPersona = async (req, res) => {
 };
 
 const postPersonas = async (req, res) => {
-  const {
-    nombreApellido,
-    dni,
-    email,
-    fecha_nacimiento,
-    direccion,
-    telefono,
-    rol = ["common_user"],
-  } = req.body;
+  const { rol = ["common_user"] } = req.body;
 
-  const newPersona = new perfilModel({
-    nombreApellido,
-    dni,
-    email,
-    fecha_nacimiento,
-    direccion,
-    telefono,
-    rol
-  });
+  const profileFields = {};
+  profileFields.usuario =req.usuario.id;
 
-  const persona = await newPersona.save();
+  profileFields.dataAlumno = {};
+  if(instituto_precedente) profileFields.dataAlumno.instituto_precedente = instituto_precedente;
+  if(titulo_secundario) profileFields.dataAlumno.titulo_secundario = titulo_secundario;
+  if(fecha_nacimiento) profileFields.dataAlumno.fecha_nacimiento = fecha_nacimiento;
+  if(direccion) profileFields.dataAlumno.direccion = direccion;
+  if(nro_telefono) profileFields.dataAlumno.nro_telefono = nro_telefono;
 
-  return res.json({
-    message: "Persona creada correctamente",
-    persona,
-  });
+  try {
+    let perfil = await perfilModel.findOne({usuario: req.usuario.id})
+    
+    if(perfil){
+      perfil = await perfilModel.findByIdAndUpdate(
+        {usuario: req.usuario.id},
+        {$set: profileFields},
+        {new: true}
+      )
+    }
+    
+    
+  } catch (error) {
+    
+  }
 };
-
 
 //MODIFICAR UNA PERSONA
 
@@ -113,7 +115,9 @@ const putPersonas = async (req, res) => {
       });
       return res.json({ msg: "Datos de la persona actualizado" });
     } catch (error) {
-      return res.status(401).json({ msg: "Error al actualizar los datos de la persona" });
+      return res
+        .status(401)
+        .json({ msg: "Error al actualizar los datos de la persona" });
     }
   } else {
     res.status(401).json({
@@ -142,5 +146,5 @@ module.exports = {
   postPersonas,
   putPersonas,
   deletePersonas,
-  getPersona
+  getPersona,
 };
